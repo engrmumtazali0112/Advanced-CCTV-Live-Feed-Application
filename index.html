@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced CCTV Live Feed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            max-width: 800px;
+            width: 95%;
+        }
+        h1 {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+        #video-feed {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .status {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #00ff00;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            button {
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced CCTV Live Feed</h1>
+        <img id="video-feed" src="{{ url_for('video_feed') }}" alt="CCTV Feed">
+        <div class="controls">
+            <button onclick="switchCamera(0)">Camera 1</button>
+            <button onclick="switchCamera(1)">Camera 2</button>
+            <button onclick="setFilter('normal')">Normal</button>
+            <button onclick="setFilter('grayscale')">Grayscale</button>
+            <button onclick="setFilter('edge')">Edge Detection</button>
+        </div>
+        <div class="status" id="status">Current: Camera 1, Normal Mode</div>
+    </div>
+
+    <script>
+        function switchCamera(cameraId) {
+            fetch(`/switch_camera/${cameraId}`)
+                .then(() => {
+                    document.getElementById('status').textContent = `Current: Camera ${cameraId + 1}, ${getCurrentFilter()}`;
+                    refreshFeed();
+                });
+        }
+
+        function setFilter(filterName) {
+            fetch(`/set_filter/${filterName}`)
+                .then(() => {
+                    document.getElementById('status').textContent = `Current: ${getCurrentCamera()}, ${filterName.charAt(0).toUpperCase() + filterName.slice(1)} Mode`;
+                    refreshFeed();
+                });
+        }
+
+        function refreshFeed() {
+            const feed = document.getElementById('video-feed');
+            feed.src = "{{ url_for('video_feed') }}?" + new Date().getTime();
+        }
+
+        function getCurrentCamera() {
+            return document.getElementById('status').textContent.includes('Camera 1') ? 'Camera 1' : 'Camera 2';
+        }
+
+        function getCurrentFilter() {
+            const status = document.getElementById('status').textContent;
+            if (status.includes('Normal')) return 'Normal Mode';
+            if (status.includes('Grayscale')) return 'Grayscale Mode';
+            if (status.includes('Edge')) return 'Edge Detection Mode';
+            return 'Normal Mode';
+        }
+    </script>
+</body>
+</html>
