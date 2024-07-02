@@ -27,6 +27,12 @@ markdownCopy# Advanced CCTV Live Feed Application
 ## Overview
 
 This project is an advanced CCTV live feed application built with Flask and OpenCV. It offers real-time video streaming with multi-camera support and live filter application, demonstrating the integration of web technologies with computer vision.
+![Screenshot (7)](https://github.com/engrmumtazali0112/Advanced-CCTV-Live-Feed-Application/assets/156393630/e918f89f-00eb-4c26-be24-80739af954e7)
+![Screenshot (8)](https://github.com/engrmumtazali0112/Advanced-CCTV-Live-Feed-Application/assets/156393630/ece57abf-2d14-4cd5-95f3-994236572ee6)
+![Screenshot (9)](https://github.com/engrmumtazali0112/Advanced-CCTV-Live-Feed-Application/assets/156393630/502e2b6e-5c28-4c65-be79-3ec4141fa986)
+
+
+
 
 ## Features
 
